@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es_MX">
+<header>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <!-- Bootstarp -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</header>
+<body>
+    <div class="card text-center">
+    <h1>Iniciar sesión</h1>
+    <form method="POST" action="compruebaUsuario.php" class="form-group">
+        <fieldset>
+            <label>
+                <span>Nombre de usuario</span>
+                <input class="form-control" type="text" name="nombre" />
+           </label>
+           <br>
+            <label>
+                <span>Contraseña</span>
+                <input class="form-control" type="password" name="contraseña"/>
+            </label>
+            <br>
+            <input class="btn btn-primary" type="submit" value="Iniciar sesión">
+        </fieldset>
+    </form>    
+    </div>
+</body>
+</html>
