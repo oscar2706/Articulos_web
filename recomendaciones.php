@@ -13,11 +13,13 @@ try {
 }catch(PDOException $e){
     echo $sql . "<br>" . $e->getMessage();
 }
+//se seleccionan todos los artículos
 $sql = "SELECT * FROM Articulo";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 
-$indice = 0;
+//no se necesita porque siempre checas con la primera posición del arreglo
+//$indice = 0;
 while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
 	$art_id = $row->idArticulo;
 	$art_titulo = $row->titulo;
@@ -31,14 +33,14 @@ while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
     $gustaStmt = $conn->prepare($gustaSql);
     if($gustaStmt->execute([$art_id, $_SESSION["usuario"]->getId()]) == true && $gustaStmt->rowCount() == 1){
         $rowGusta = $gustaStmt->fetch();
-        if( $rowGusta[$indice] == 1)
+        if( $rowGusta[0] == 1)
             $art_gusta = 1;
         else
             $art_gusta = 0;
     }
 	$articulo = new Articulo($art_id, $art_titulo, $art_subt, $art_cont, $art_fecha, $art_idTema, $art_gusta);
     $ListOfArticulos[] = $articulo;
-    $indice++;
+    //$indice++;
 }
 $_SESSION["articulos"] = $ListOfArticulos;
 $arregloArticulos = $_SESSION["articulos"];
@@ -118,9 +120,14 @@ $arregloArticulos = $_SESSION["articulos"];
                 var idArt = $("th[id]").eq(buttonId).attr('id');
                 var idUser = <?php echo $_SESSION["usuario"]->getId();?>;
                 var gusta = 0;
+                var claseBoton = this.className;
                 //alert("No Gusta "+ buttonId + ", idArticulo:" +idArt);
                 
-                $.ajax({
+                //alert("Clase del boton: " + claseBoton);
+
+                if(claseBoton == "btn btn-secondary")
+                {
+                    $.ajax({
                     url:'updateGusta.php',
                     method:'POST',
                     data:{
@@ -130,27 +137,34 @@ $arregloArticulos = $_SESSION["articulos"];
                     },
                     success:function(response){
                         if(response == 1){
-                            alert("Gusto actualizado");
+                            alert("Gusto actualizado " + response);
                             $("button:odd").eq(buttonId).removeClass('btn-secondary');
                             $("button:odd").eq(buttonId).addClass('btn-primary');
                             $("button:even").eq(buttonId).removeClass('btn-primary');
                             $("button:even").eq(buttonId).addClass('btn-secondary');
                         }
                         else{
-                            alert("Hubo un error");
-                        }
-                        
+                            alert("Hubo un error " + response);
+                        }             
                     }
                 });
+                }
             });
+
             $("button:even").click(function(){
                 var buttonId = this.id;
                 var idArt = $("th[id]").eq(buttonId).attr('id');
                 //var idArt = 7;
                 var idUser = <?php echo $_SESSION["usuario"]->getId();?>;
                 var gusta = 1;
-                //alert("Gusta " + buttonId + ", idArticulo:" +idArt);
-                $.ajax({
+                var claseBoton = this.className;
+                //alert("No Gusta "+ buttonId + ", idArticulo:" +idArt);
+                
+                //alert("Clase del boton: " + claseBoton);
+
+                if(claseBoton == "btn btn-secondary")
+                {
+                    $.ajax({
                     url:'updateGusta.php',
                     method:'POST',
                     data:{
@@ -160,18 +174,20 @@ $arregloArticulos = $_SESSION["articulos"];
                     },
                     success:function(response){
                         if(response == 1){
-                            alert("Gusto actualizado");
+                            alert("Gusto actualizado " + response);
                             $("button:even").eq(buttonId).removeClass('btn-secondary');
                             $("button:even").eq(buttonId).addClass('btn-primary');
                             $("button:odd").eq(buttonId).removeClass('btn-primary');
                             $("button:odd").eq(buttonId).addClass('btn-secondary');
                         }
                         else{
-                            alert("Hubo un error");
+                            alert("Hubo un error " + response);
                         }
                     }
                 });
+                }
             });
+
         });
         </script>
 </body>

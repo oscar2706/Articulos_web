@@ -22,7 +22,32 @@
       $updateSql = "UPDATE gusta_Articulo SET gusta = ? WHERE idArticulo = ? and idAutor = ?";
       $updateStmt = $conn->prepare($updateSql);
       if($updateStmt->execute([$gusta, $idArticle, $idAutor]))
+      {
+         $temaArticuloSql = "SELECT idTema FROM articulo WHERE idArticulo = ?";
+         $temaArticuloStmt = $conn->prepare($temaArticuloSql);
+         $temaArticuloStmt->execute([$idArticle]);
+         $resultadoTemaArticuloStmt = $temaArticuloStmt->fetch(PDO::FETCH_OBJ);
+
+         $meGustaPorTemaSql = "SELECT cantidadGusta FROM tema WHERE idTema = ?";
+         $meGustaPorTemaStmt = $conn->prepare($meGustaPorTemaSql);
+         $meGustaPorTemaStmt->execute([$resultadoTemaArticuloStmt->idTema]);
+         $resultadoMeGustaPorTemaStmt = $meGustaPorTemaStmt->fetch(PDO::FETCH_OBJ);
+
+         if($gusta == 1)
+         {
+            $nuevaCantidadMeGusta = $resultadoMeGustaPorTemaStmt->cantidadGusta + 2;
+         }
+         else
+         {
+            $nuevaCantidadMeGusta = $resultadoMeGustaPorTemaStmt->cantidadGusta - 2;
+         }
+
+         $nuevoMeGustaPorTemaSql = "UPDATE tema SET cantidadGusta = ? WHERE idTema = ?";
+         $nuevoMeGustaPorTemaStmt = $conn->prepare($nuevoMeGustaPorTemaSql);
+         $nuevoMeGustaPorTemaStmt->execute([$nuevaCantidadMeGusta, $resultadoTemaArticuloStmt->idTema]);
+
          echo 1;
+      }
       else
          echo 0;
    }
@@ -30,7 +55,32 @@
       $insertSql = "INSERT INTO gusta_Articulo (idAutor, idArticulo, gusta) VALUES (?, ?, ?)";
       $insertStmt = $conn->prepare($insertSql);
       if($insertStmt->execute([$idAutor, $idArticle, $gusta]))
+      {
+         $temaArticuloSql = "SELECT idTema FROM articulo WHERE idArticulo = ?";
+         $temaArticuloStmt = $conn->prepare($temaArticuloSql);
+         $temaArticuloStmt->execute([$idArticle]);
+         $resultadoTemaArticuloStmt = $temaArticuloStmt->fetch(PDO::FETCH_OBJ);
+
+         $meGustaPorTemaSql = "SELECT cantidadGusta FROM tema WHERE idTema = ?";
+         $meGustaPorTemaStmt = $conn->prepare($meGustaPorTemaSql);
+         $meGustaPorTemaStmt->execute([$resultadoTemaArticuloStmt->idTema]);
+         $resultadoMeGustaPorTemaStmt = $meGustaPorTemaStmt->fetch(PDO::FETCH_OBJ);
+
+         if($gusta == 1)
+         {
+            $nuevaCantidadMeGusta = $resultadoMeGustaPorTemaStmt->cantidadGusta + 1;
+         }
+         else
+         {
+            $nuevaCantidadMeGusta = $resultadoMeGustaPorTemaStmt->cantidadGusta - 1;
+         }
+
+         $nuevoMeGustaPorTemaSql = "UPDATE tema SET cantidadGusta = ? WHERE idTema = ?";
+         $nuevoMeGustaPorTemaStmt = $conn->prepare($nuevoMeGustaPorTemaSql);
+         $nuevoMeGustaPorTemaStmt->execute([$nuevaCantidadMeGusta, $resultadoTemaArticuloStmt->idTema]);
+
          echo 1 ;
+      } 
       else
          echo 0;
    }

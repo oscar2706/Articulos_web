@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<articulos>
+  <articulo id="1">
+    <titulo>Gases Ideales</titulo>
+    <subtitulo>Primera Ley</subtitulo>
+    <contenido>a mayor presion, mayor temperatura</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>2</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+  <articulo id="2">
+    <titulo>El Llano en Llamas</titulo>
+    <subtitulo>Llano</subtitulo>
+    <contenido>se observaba a lo lejos el incendio</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>4</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+  <articulo id="3">
+    <titulo>Historia de Puebla</titulo>
+    <subtitulo>Batalla del 5 de Mayo</subtitulo>
+    <contenido>Ocurrio el 5 de mayo</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>5</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+  <articulo id="4">
+    <titulo>Desarrollo Android</titulo>
+    <subtitulo>Eclipse</subtitulo>
+    <contenido>aprenderemos a instalar eclipse</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>6</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+  <articulo id="5">
+    <titulo>Baldor</titulo>
+    <subtitulo>Ecuaciones Lineales</subtitulo>
+    <contenido>y = x</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>1</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+</articulos>
