@@ -40,4 +40,20 @@
     <idTema>1</idTema>
     <gusta>-1</gusta>
   </articulo>
+  <articulo id="6">
+    <titulo>Newton</titulo>
+    <subtitulo>Los inicios</subtitulo>
+    <contenido>su nacimiento</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>2</idTema>
+    <gusta>-1</gusta>
+  </articulo>
+  <articulo id="7">
+    <titulo>Jardineria I</titulo>
+    <subtitulo>macetas</subtitulo>
+    <contenido>la arcilla</contenido>
+    <fecha>2019-04-05</fecha>
+    <idTema>3</idTema>
+    <gusta>-1</gusta>
+  </articulo>
 </articulos>

@@ -8,8 +8,8 @@ $db_contrasena = "";
 $dbname = "Article";
 try {
 	$conn = new PDO("mysql:host=$db_servername;dbname=$dbname", $db_usuario, $db_contrasena);
-	 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	 $conn->exec("SET NAMES 'utf8';");
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$conn->exec("SET NAMES 'utf8';");
 }catch(PDOException $e){
     echo $sql . "<br>" . $e->getMessage();
 }
@@ -72,9 +72,9 @@ $arregloArticulos = $_SESSION["articulos"];
                 <th scope="col">Gusta</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tablaArticulos">
             <?php 
-				for ($x = 0; $x < sizeof($arregloArticulos); $x++) {
+				for ($x = 0; $x < sizeof($arregloArticulos)-(sizeof($arregloArticulos)*.3); $x++) {
 					?>
             <tr>
                 <th scope="row" id="<?php echo $ListOfArticulos[$x]->getId(); ?>">
@@ -111,10 +111,75 @@ $arregloArticulos = $_SESSION["articulos"];
 			?>
         </tbody>
     </table>
+    <button id="btnNuevosArticulos">Nuevos Artículos</button><br>
     <a class="text-secondary" href="buscaArticulo.php?">Regresar</a>
     
     <script>
         $(document).ready(function(){
+            $("#btnNuevosArticulos").click(function(){
+                var noCategoria = 0;
+                var registro;
+
+                <?php 
+				    for ($x = 1+intval(sizeof($arregloArticulos)-(sizeof($arregloArticulos)*.3)); $x < sizeof($arregloArticulos); $x++) {
+                        $bandera = 0;
+                        $categoriasFavoritasSql = "SELECT idTema FROM tema GROUP BY idTema ORDER BY cantidadGusta desc LIMIT 3";
+                        $categoriasFavoritasStmt = $conn->prepare($categoriasFavoritasSql);
+                        $categoriasFavoritasStmt->execute();
+
+                        while ($nombresCategorias = $categoriasFavoritasStmt->fetch(PDO::FETCH_OBJ)) {
+                            if($ListOfArticulos[$x]->getIdTema() == $nombresCategorias->idTema)
+                            {
+                                $bandera = 1;
+                                break;
+                            }
+                        }
+
+                        if($bandera == 1)
+                        {
+                ?>
+                registro = " \
+                <tr> \
+                    <th scope=\"row\" id=\"<?php echo $ListOfArticulos[$x]->getId(); ?>\">\
+                        <?php echo $ListOfArticulos[$x]->getId(); ?> \
+                    </th> \
+                    <td><?php echo $ListOfArticulos[$x]->getTitulo(); ?></td> \
+                    <td><?php echo $ListOfArticulos[$x]->getSubtitulo(); ?></td> \
+                    <td><?php echo $ListOfArticulos[$x]->getContenido(); ?></td> \
+                    <td> \
+                    <button \
+                    class=\"btn <?php if($ListOfArticulos[$x]->getGusta() == 1) 
+                                    echo 'btn-primary'; 
+                                else 
+                                    echo 'btn-secondary'; 
+                                ?>\" \
+                    id=\"<?php echo $x;?>\" \
+                    onclick=\"modificaMeGusta(<?php echo $_SESSION["usuario"]->getId(); ?>, <?php echo $ListOfArticulos[$x]->getId(); ?>, 'gusta', '<?php echo $x?>')\"> \
+                    👍🏻 \
+                    <button \
+                    class=\"btn <?php if($ListOfArticulos[$x]->getGusta() == 0) 
+                                    echo 'btn-primary'; 
+                                else 
+                                    echo 'btn-secondary'; 
+                                ?>\" \
+                    id=\"<?php echo $x;?>\" \
+                    onclick=\"modificaMeGusta(<?php echo $_SESSION["usuario"]->getId(); ?>, <?php echo $ListOfArticulos[$x]->getId(); ?>, 'noGusta', '<?php echo $x?>')\"> \
+                    👎🏻 \
+                    </button> \
+                    </td> \
+                </tr> \
+                ";
+                    
+                $("#tablaArticulos").append(registro);
+
+                <?php 
+                    }
+                }
+			    ?>
+
+                $("#btnNuevosArticulos").hide();
+            })
+
             $("button:odd").click(function(){
                 var buttonId = this.id;
                 var idArt = $("th[id]").eq(buttonId).attr('id');
@@ -191,4 +256,4 @@ $arregloArticulos = $_SESSION["articulos"];
         });
         </script>
 </body>
-</html> 
+</html>
